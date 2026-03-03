@@ -8,10 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "15.3.8",
+    "@upstash/redis": "^1.34.3",
+    "next": "^15.5.12",
     "react": "^19",
     "react-dom": "^19",
-    "recharts": "^2.12.7",
-    "@upstash/redis": "^1.34.3"
+    "recharts": "^2.12.7"
   }
 }
