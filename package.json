@@ -1,0 +1,17 @@
+{
+  "name": "weight-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "15.2.3",
+    "react": "^19",
+    "react-dom": "^19",
+    "recharts": "^2.12.7",
+    "@upstash/redis": "^1.34.3"
+  }
+}
