@@ -1,8 +1,11 @@
 import { Redis } from "@upstash/redis";
-const kv = new Redis({
-  url: process.env.KV_REST_API_URL,
-  token: process.env.KV_REST_API_TOKEN,
-});
+
+function getKv() {
+  return new Redis({
+    url: process.env.KV_REST_API_URL,
+    token: process.env.KV_REST_API_TOKEN,
+  });
+}
 import { NextResponse } from "next/server";
 
 const INITIAL_GABRIEL = [
@@ -115,8 +118,8 @@ function sortByDate(arr) {
 // GET /api/weights — returns { gabriel: [...], melissa: [...] }
 export async function GET() {
   try {
-    const gabriel = await kv.get("wt-gabriel") ?? INITIAL_GABRIEL;
-    const melissa = await kv.get("wt-melissa") ?? INITIAL_MELISSA;
+    const gabriel = await getKv().get("wt-gabriel") ?? INITIAL_GABRIEL;
+    const melissa = await getKv().get("wt-melissa") ?? INITIAL_MELISSA;
     return NextResponse.json({ gabriel, melissa });
   } catch (err) {
     console.error(err);
@@ -138,7 +141,7 @@ export async function POST(req) {
 
     const key = person === "gabriel" ? "wt-gabriel" : "wt-melissa";
     const field = person;
-    const current = await kv.get(key) ?? (person === "gabriel" ? INITIAL_GABRIEL : INITIAL_MELISSA);
+    const current = await getKv().get(key) ?? (person === "gabriel" ? INITIAL_GABRIEL : INITIAL_MELISSA);
 
     // Replace if date exists, otherwise add
     const updated = sortByDate([
@@ -146,7 +149,7 @@ export async function POST(req) {
       { date, [field]: weight },
     ]);
 
-    await kv.set(key, updated);
+    await getKv().set(key, updated);
     return NextResponse.json({ success: true, data: updated });
   } catch (err) {
     console.error(err);
